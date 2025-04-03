@@ -1,0 +1,129 @@
+erDiagram
+    User ||--|| Doctor : extends
+    User ||--|| Customer : extends
+    User ||--|| Admin : extends
+    Doctor ||--o{ ClinicLocation : operates
+    ClinicLocation ||--o{ Appointment : hosts
+    ClinicLocation ||--o{ Schedule : maintains
+    Customer ||--o{ Appointment : books
+    Customer ||--o{ Pet : owns
+    Pet ||--o{ Appointment : requires
+    Doctor ||--o{ PaymentAccount : has
+    Appointment ||--|| Payment : generates
+    Appointment ||--o{ Review : receives
+
+    User {
+        int id PK
+        string username
+        string password
+        string name
+        string email
+        string phone
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Admin {
+        int id PK
+        int user_id FK
+        string role
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Doctor {
+        int id PK
+        int user_id FK
+        string credentials
+        boolean is_verified
+        float commission_rate
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ClinicLocation {
+        int id PK
+        int doctor_id FK
+        string name
+        string address
+        string[] images
+        boolean is_active
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Customer {
+        int id PK
+        int user_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Pet {
+        int id PK
+        int customer_id FK
+        string name
+        string species
+        string breed
+        date date_of_birth
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Appointment {
+        int id PK
+        int doctor_id FK
+        int location_id FK
+        int customer_id FK
+        int pet_id FK
+        datetime appointment_time
+        enum status
+        float fee
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Schedule {
+        int id PK
+        int location_id FK
+        date date
+        time start_time
+        time end_time
+        int slots_available
+        boolean is_holiday
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Payment {
+        int id PK
+        int appointment_id FK
+        float amount
+        enum status
+        float platform_commission
+        float doctor_amount
+        timestamp payment_date
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PaymentAccount {
+        int id PK
+        int doctor_id FK
+        string bank_account_number
+        string bank_name
+        enum payout_frequency
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    Review {
+        int id PK
+        int doctor_id FK
+        int customer_id FK
+        int appointment_id FK
+        int rating
+        string comment
+        timestamp created_at
+        timestamp updated_at
+    }
